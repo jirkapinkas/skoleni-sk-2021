@@ -10,6 +10,13 @@ Co to udela:
 1. Stahne "Paketo Buidpack" (image s Mavenem),
    coz provede build aplikace a vytvori Docker image
 
+root@vm29444:~/demo# docker images
+REPOSITORY                 TAG              IMAGE ID       CREATED        SIZE
+paketobuildpacks/run       base-cnb         5eaa2a599cd5   10 days ago    87.9MB
+demo                       0.0.1-SNAPSHOT   4f0e77cdbed9   41 years ago   264MB
+paketobuildpacks/builder   base             0e5a0d1ee6bc   41 years ago   684MB
+
+
 [INFO]
 [INFO]  > Pulling builder image 'docker.io/paketobuildpacks/builder:base' 0%
 [INFO]  > Pulling builder image 'docker.io/paketobuildpacks/builder:base' 1%
