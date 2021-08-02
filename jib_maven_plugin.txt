@@ -1,0 +1,28 @@
+<plugin>
+    <groupId>com.google.cloud.tools</groupId>
+    <artifactId>jib-maven-plugin</artifactId>
+    <version>2.4.0</version>
+    <configuration>
+        <from>
+            <image>adoptopenjdk/openjdk11-openj9:alpine-jre</image>
+        </from>
+        <to>
+            <image>registry.gitlab.com/jirkapinkas/javavids</image>
+        </to>
+        <container>
+            <jvmFlags>
+                <jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
+                <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                <jvmFlag>-Duser.timezone=Europe/Prague</jvmFlag>
+                <jvmFlag>-Xtune:virtualized</jvmFlag>
+            </jvmFlags>
+            <args>
+                <arg>--spring.profiles.active=prod</arg>
+            </args>
+        </container>
+    </configuration>
+</plugin>
+
+
+
+mvn clean compile com.google.cloud.tools:jib-maven-plugin:2.4.0:build -B -Djib.to.auth.username=jirkapinkas -Djib.to.auth.password=$GITLAB_PASS
