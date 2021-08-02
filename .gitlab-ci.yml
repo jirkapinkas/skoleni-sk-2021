@@ -1,0 +1,40 @@
+# https://about.gitlab.com/blog/2016/07/29/the-basics-of-gitlab-ci/
+stages:
+  - build
+  - deploy
+  - check_sitemap
+# https://codeburst.io/gitlab-build-and-push-to-a-server-via-ssh-6d27ca1bf7b4
+# https://gitlab.com/gitlab-org/gitlab-foss/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
+image: adoptopenjdk/maven-openjdk11
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+cache:
+  paths:
+    - .m2/repository
+before_script:
+  - apt update -qq && apt install -y -qq sshpass
+build:
+  stage: build
+  script:
+    - mvn install -B
+deploy:
+  stage: deploy
+    #  when: manual
+  script:
+    - mvn clean compile com.google.cloud.tools:jib-maven-plugin:2.4.0:build -B -Djib.to.auth.username=jirkapinkas -Djib.to.auth.password=$GITLAB_PASS
+    - sshpass -V
+    - export SSHPASS=$USER_PASS
+    - sshpass -e ssh -o stricthostkeychecking=no -T -p 22942 -t root@seico.cz "docker pull registry.gitlab.com/jirkapinkas/javavids"
+    - sshpass -e ssh -o stricthostkeychecking=no -T -p 22942 -t root@seico.cz "docker image prune -f"
+    - sshpass -e ssh -o stricthostkeychecking=no -T -p 22942 -t root@seico.cz "docker rm -v -f javavids | true"
+    - sshpass -e ssh -o stricthostkeychecking=no -T -p 22942 -t root@seico.cz "docker run --restart=always -d --name javavids -p 127.0.0.1:8087:8080 --add-host=postgres:185.8.239.196 registry.gitlab.com/jirkapinkas/javavids:latest"
+    # pocka 60 vterin, pak by uz mel server bezet na 100% ... a nasledne se spusti check sitemap
+    - echo "Waiting for 60 seconds ..."
+    - sleep 60
+    - echo "... done waiting"
+check_sitemap:
+  stage: check_sitemap
+  image: jirkapinkas/sitemap_validator
+  script:
+    - /check_sitemap/main.py -s "https://javavids.com/sitemap.xml" -c 5
