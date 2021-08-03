@@ -1,0 +1,17 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: quickstart
+spec:
+  version: 7.13.4
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+  count: 1
+  elasticsearchRef:
+    name: quickstart
+  podTemplate: 
+    metadata:
+      labels:
+        app: elasticsearch
