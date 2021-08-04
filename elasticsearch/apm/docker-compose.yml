@@ -6,18 +6,22 @@ services:
       dockerfile: ./micro-crm/Dockerfile
     networks:
       - elastic
+    ports:
+      - "8081:8080"
   products:
     build:
       context: ./
       dockerfile: ./micro-products/Dockerfile
     networks:
       - elastic
+    ports:
+      - "8082:8080"
   mailing:
     build:
       context: ./
       dockerfile: ./micro-mailing/Dockerfile
     ports:
-    - "8080:8080"
+      - "8080:8080"
     networks:
       - elastic
   elasticsearch:

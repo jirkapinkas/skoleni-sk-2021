@@ -14,6 +14,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 public class MailingController {
 
@@ -35,6 +38,7 @@ public class MailingController {
     public String constructEmail(@PathVariable int customerId) {
         log.info("Called MailingController::constructEmail, customerId = {}", customerId);
         // sekvencni volani
+
         Customer customer = restTemplate.getForObject("http://crm:8080/customers/" + customerId, Customer.class);
         List<Product> products = Arrays.asList(restTemplate.getForObject("http://products:8080/products", Product[].class));
         return "TODO send email to: " + customer.getEmail() + " to say hello to: " + customer.getName()

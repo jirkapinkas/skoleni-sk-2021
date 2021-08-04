@@ -6,7 +6,5 @@
 
 		docker-compose down
 
-4. Jaeger je k dispozici zde: http://localhost:16686
-
 ## Rozšíření: 
 
