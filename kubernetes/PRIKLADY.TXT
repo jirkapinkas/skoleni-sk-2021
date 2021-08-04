@@ -1,0 +1,24 @@
+Vytvoreni nginx + service:
+==========================
+kubectl get nodes
+kubectl apply -f deployment.yml NEBO: kubectl create -f deployment.yml
+kubectl get pods
+kubectl apply -f service.yml
+kubectl get services
+EXTERNAL-IP = localhost => nginx bezi na http://localhost:80
+
+Smazani nginx + service:
+========================
+kubectl delete -f deployment.yml
+kubectl delete -f service.yml
+
+Describe:
+=========
+kubectl describe pods
+kubectl describe svc
+
+Zmena labelu podu:
+==================
+kubectl get po --show-labels
+kubectl label pods nginx-deployment-6d59fc5866-95c69 rel=maint --overwrite
+kubectl label pods nginx-deployment-6d59fc5866-95c69 rel=stable --overwrite
