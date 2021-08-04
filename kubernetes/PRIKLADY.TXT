@@ -2,3 +2,5 @@ kubectl get nodes
 kubectl apply -f deployment.yml
 kubectl get pods
 kubectl apply -f service.yml
+kubectl get services
+EXTERNAL-IP = localhost => nginx bezi na http://localhost:80
