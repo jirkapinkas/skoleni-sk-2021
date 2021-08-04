@@ -1,0 +1,16 @@
+version: '3'
+services:
+    web:
+        image: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - "./html/:/usr/share/nginx/html/"
+        # depends_on:
+            # - "tomcat"
+    tomcat:
+        image: tomcat
+        ports:
+            - "8080:8080"
+        depends_on:
+            - "web"
