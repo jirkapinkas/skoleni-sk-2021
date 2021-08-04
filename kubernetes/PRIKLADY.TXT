@@ -11,3 +11,8 @@ Smazani nginx + service:
 ========================
 kubectl delete -f deployment.yml
 kubectl delete -f service.yml
+
+Describe:
+=========
+kubectl describe pods
+kubectl describe svc
