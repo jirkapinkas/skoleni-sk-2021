@@ -22,3 +22,8 @@ Zmena labelu podu:
 kubectl get po --show-labels
 kubectl label pods nginx-deployment-6d59fc5866-95c69 rel=maint --overwrite
 kubectl label pods nginx-deployment-6d59fc5866-95c69 rel=stable --overwrite
+
+
+Ziskani secretu:
+================
+kubectl get secrets quickstart-es-elastic-user -o jsonpath='{.data}'
